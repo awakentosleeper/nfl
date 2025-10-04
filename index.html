@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Awaken - Fantasy Football</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body class="light-mode">
+  <header>
+    <h1>Awaken</h1>
+    <div class="controls">
+      <button id="zoom-in">🔍+</button>
+      <button id="zoom-out">🔍-</button>
+      <button id="toggle-mode">🌙 / ☀️</button>
+    </div>
+  </header>
+
+  <main class="main-layout">
+    <section class="search-column">
+      <h2>Pesquisas</h2>
+      <!-- Formulário de pesquisa futura -->
+      <input type="text" id="search-input" placeholder="Buscar jogador, time..." />
+      <button id="search-btn">Pesquisar</button>
+    </section>
+
+    <section class="results-column">
+      <h2>Resultados</h2>
+      <div id="results">
+        <!-- Resultados aparecerão aqui -->
+      </div>
+    </section>
+
+    <section class="extras-column">
+      <div class="carousel">
+        <h2>Destaques</h2>
+        <div id="carousel-images">
+          <img src="images/img1.jpg" class="carousel-img active" alt="Imagem 1" />
+          <img src="images/img2.jpg" class="carousel-img" alt="Imagem 2" />
+          <img src="images/img3.jpg" class="carousel-img" alt="Imagem 3" />
+          <img src="images/img4.jpg" class="carousel-img" alt="Imagem 4" />
+        </div>
+      </div>
+      <div class="poll">
+        <h2>Enquete da Semana</h2>
+        <p>Quem será o melhor QB da semana?</p>
+        <button>Mahomes</button>
+        <button>Allen</button>
+        <button>Hurts</button>
+        <button>Outro</button>
+      </div>
+    </section>
+  </main>
+
+  <script src="js/script.js"></script>
+</body>
+</html>

@@ -1,0 +1,82 @@
+:root {
+  --bg-light: #ffffff;
+  --bg-dark: #121212;
+  --text-light: #000000;
+  --text-dark: #ffffff;
+  --accent-color: #1e90ff;
+  --header-height: 60px;
+}
+
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  transition: background-color 0.3s, color 0.3s;
+  font-size: 16px;
+}
+
+body.light-mode {
+  background-color: var(--bg-light);
+  color: var(--text-light);
+}
+
+body.dark-mode {
+  background-color: var(--bg-dark);
+  color: var(--text-dark);
+}
+
+header {
+  height: var(--header-height);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 1rem;
+  background-color: var(--accent-color);
+  color: white;
+}
+
+.controls button {
+  margin-left: 0.5rem;
+  padding: 0.3rem 0.6rem;
+  cursor: pointer;
+  font-size: 1rem;
+}
+
+.main-layout {
+  display: flex;
+  height: calc(100vh - var(--header-height));
+}
+
+.search-column {
+  width: 30%;
+  padding: 1rem;
+  border-right: 1px solid #ccc;
+}
+
+.results-column {
+  width: 45%;
+  padding: 1rem;
+  border-right: 1px solid #ccc;
+}
+
+.extras-column {
+  width: 25%;
+  padding: 1rem;
+}
+
+.carousel-img {
+  display: none;
+  width: 100%;
+  border-radius: 8px;
+}
+
+.carousel-img.active {
+  display: block;
+}
+
+.poll button {
+  display: block;
+  width: 100%;
+  margin: 0.3rem 0;
+  padding: 0.5rem;
+  cursor: pointer;
+}
