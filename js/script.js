@@ -25,4 +25,14 @@ setInterval(() => {
   images[currentIndex].classList.remove("active");
   currentIndex = (currentIndex + 1) % images.length;
   images[currentIndex].classList.add("active");
-}, 3000); // muda a imagem a cada 3 segundos
+}, 4000); // muda a imagem a cada 4 segundos
+// Contador de acessos usando countapi.xyz
+fetch("https://api.countapi.xyz/hit/awaken-portal.com/visits")
+  .then(res => res.json())
+  .then(data => {
+    document.getElementById("visit-count").textContent = data.value;
+  })
+  .catch(err => {
+    console.error("Erro ao carregar contador:", err);
+    document.getElementById("visit-count").textContent = "N/A";
+  });
