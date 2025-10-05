@@ -23,7 +23,7 @@
         <h3>Quem <b>não</b> joga nos meus times?</h3>
         <div class="row">
           <input id="username" type="text" size="22" placeholder="Nome do Usuário" />
-          <button class="primary" onclick="buscarPorUsuario()">Verificar Meus Times</button>
+          <button class="primary" onclick="buscarPorUsuario()">Verificar</button>
         </div>
         <div style="color:var(--muted);font-size:13px;margin-top:8px;">
           Exibe jogadores com status questionável em todos os seus times.Também permite copiar League ID.
@@ -34,11 +34,11 @@
       <div class="panel">
         <h3>Quais os buracos na liga que eu jogo?</h3>
         <div class="row">
-          <input id="leagueId" type="text" size="22" placeholder="League ID (Ex: 1252690504571695104)" />
+          <input id="leagueId" type="text" size="22" placeholder="League ID" />
           <button class="primary" onclick="buscarPorLiga()">Buscar Liga</button>
         </div>
         <div style="color:var(--muted);font-size:13px;margin-top:8px;">
-          Exibe titulares não saudáveis de todos os times na liga pesquisada. Dica: Copie o league id na busca anterior.
+          Exibe s não saudáveis de todos os times na liga pesquisada. Dica: Copie o league id na busca anterior.
         </div>
       </div>
 
@@ -46,8 +46,8 @@
       <div class="panel">
         <h3>Varredura de Franchise Players</h3>
         <div class="row">
-          <input id="franchiseLeagueId" type="text" size="22" placeholder="League ID (Ex: 1200804942609129472)" />
-          <input id="minFranchise" type="number" size="4" placeholder="Mínimo de titulares ≥" class="short" />
+          <input id="franchiseLeagueId" type="text" size="22" placeholder="League ID" />
+          <input id="minFranchise" type="number" size="4" placeholder="Mín titulares ≥" class="short" />
           <label style="display:flex;align-items:center;gap:6px;">
             <input id="onlyFailing" type="checkbox" /> Ver apenas times abaixo do mínimo.
           </label>
