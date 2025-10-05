@@ -19,9 +19,69 @@
   <main class="main-layout">
     <section class="search-column">
       <h2>Pesquisas</h2>
-      <!-- Formulário de pesquisa futura -->
-      <input type="text" id="search-input" placeholder="Buscar jogador, time..." />
-      <button id="search-btn">Pesquisar</button>
+<div class="panel">
+        <h3>Como está a saúde do jogadores de todos os meus times?</h3>
+        <div class="row">
+          <input id="username" type="text" placeholder="Usuário Sleeper (ex: molotovpigs)" />
+        </div>
+        <div class="row">
+          <button class="primary" onclick="buscarPorUsuario()">Buscar Usuário</button>
+        </div>
+        <div style="color:var(--muted);font-size:13px;margin-top:8px;">
+          Exibe jogadores com status questionável em todos os seus times.Também permite copiar League ID.
+        </div>
+      </div>
+
+      <!-- 2) Por League ID (agora a segunda) -->
+      <div class="panel">
+        <h3>Quais os buracos na liga que eu jogo?</h3>
+        <div class="row">
+          <input id="leagueId" type="text" placeholder="League ID (Ex: 1200153826695323648)" />
+        </div>
+        <div class="row">
+          <button class="primary" onclick="buscarPorLiga()">Buscar Liga</button>
+        </div>
+        <div style="color:var(--muted);font-size:13px;margin-top:8px;">
+          Exibe titulares não saudáveis. 
+        </div>
+      </div>
+
+      <!-- 3) Verificar Franchise Players -->
+      <div class="panel">
+        <h3>Varredura de Franchise Players</h3>
+        <div class="row">
+          <input id="franchiseLeagueId" type="text" placeholder="League ID (Ex: 1234...)" />
+        </div>
+        <div class="row">
+          <input id="minFranchise" type="number" placeholder="Mínimo de titulares ≥" class="short" />
+          <label style="display:flex;align-items:center;gap:6px;">
+            <input id="onlyFailing" type="checkbox" /> Apenas times abaixo do mínimo.
+          </label>
+        </div>
+        <div class="row">
+          <button class="primary" onclick="buscarFranchisePlayers()">Verificar Franquias</button>
+        </div>
+        <div style="color:var(--muted);font-size:13px;margin-top:8px;">
+          Quais os jogadores com status arriscado na sua franquia.
+        </div>
+      </div>
+
+      <!-- 4) Procurar jogadores de franquia -->
+      <div class="panel">
+        <h3> Precisando de Franchise Players? Busque aqui.</h3>
+        <div class="row">
+          <select id="franchiseTeamSelect"></select>
+        </div>
+        <div class="row" style="margin-top:8px;">
+          <input id="search4LeagueId" type="text" placeholder="League ID (Ex: 1234...)" />
+        </div>
+        <div class="row">
+          <button class="primary" onclick="buscarFranchisePlayersByTeam()">Procurar Jogadores</button>
+        </div>
+        <div style="color:var(--muted);font-size:13px;margin-top:8px;">
+          Escolha um time e informe o id da sua liga para localizar todos os jogadores da franquia, livres ou não.
+        </div>
+      </div>
     </section>
 
     <section class="results-column">
