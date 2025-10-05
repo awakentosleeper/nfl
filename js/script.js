@@ -36,3 +36,10 @@ fetch("https://api.countapi.xyz/hit/awaken-portal.com/visits")
     console.error("Erro ao carregar contador:", err);
     document.getElementById("visit-count").textContent = "N/A";
   });
+
+(function accessCounter(){
+  let n = Number(localStorage.getItem("acessosSleeper") || 0);
+  n++;
+  localStorage.setItem("acessosSleeper", n);
+  document.getElementById("accessCount").textContent = `GMs em ação: ${n}`;
+})();
