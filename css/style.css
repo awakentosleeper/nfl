@@ -68,6 +68,9 @@ header {
   border-right: 1px solid #ccc;
 }
 
+  button.primary {
+      background:var(--accent); color:#fff;border:0;padding:8px 10px;border-radius:8px;cursor:pointer;
+    }
 
 .carousel-img {
   display: none;
