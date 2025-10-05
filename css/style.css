@@ -25,7 +25,7 @@ body {
 
 /* Fundo em degradê */
 body.light-mode {
-  background: linear-gradient(to right, #e0f7fa, #ffffff);
+  background: linear-gradient(to right, #31ae58, #ffffff);
   color: var(--text-light);
 }
 
