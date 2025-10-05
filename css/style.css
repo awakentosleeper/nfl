@@ -5,6 +5,15 @@
   --text-dark: #ffffff;
   --accent-color: #1e90ff;
   --header-height: 60px;
+ --bg-left-dark: linear-gradient(90deg, rgba(10,10,10,1) 0%, rgba(40,40,40,0.9) 60%);
+      --card-bg: #ffffff;
+      --card-text: #222;
+      --accent: #1e90ff;
+      --ok: #2e7d32;
+      --bad: #b71c1c;
+      --orange: #ef6c00;
+      --muted: #777;
+
 }
 
 body {
