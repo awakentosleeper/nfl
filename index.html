@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Awaken - v37.18 - 11OUT25</title>
+  <title>Awaken - v37.19 - 11OUT25</title>
   <style>
     :root{
       --bg-left-dark: linear-gradient(90deg, rgba(10,10,10,1) 0%, rgba(40,40,40,0.9) 60%);
@@ -391,19 +391,36 @@ async function safeFetchJson(url){
    - Recebe: starters array, players map, optional rosterPositions (array)
    - Retorna: { countEmpty, emptySlots: [{index, name?}] }
    --------------------------------------------------------- */
-function detectEmptyPositions(starters, playersMap, rosterPositions){
+function detectEmptyPositions(starters = [], players = {}, rosterPositions = null, league = null) {
+  // Tenta obter as posições da liga se não foram passadas explicitamente
+  if ((!Array.isArray(rosterPositions) || rosterPositions.length === 0) && league) {
+    rosterPositions = league.roster_positions 
+      || league.metadata?.roster_positions 
+      || league.settings?.roster_positions 
+      || [];
+  }
+
+  // Se ainda assim estiver vazio, cria nomes genéricos
+  if (!Array.isArray(rosterPositions) || rosterPositions.length === 0) {
+    rosterPositions = Array.from({ length: Math.max(1, starters.length) }, (_, i) => `Slot ${i + 1}`);
+  }
+
   const emptySlots = [];
-  for (let i = 0; i < (starters || []).length; i++){
+
+  for (let i = 0; i < rosterPositions.length; i++) {
+    const slotName = rosterPositions[i] || `Slot ${i + 1}`;
     const pid = starters[i];
-    const isEmpty = !pid || pid === 0 || pid === "0" || pid === null || pid === "" || !playersMap[pid];
-    if(isEmpty){
-      // try to get position name from rosterPositions (mapping by index if possible)
-      let name = null;
-      if(Array.isArray(rosterPositions) && rosterPositions[i]) name = rosterPositions[i];
-      emptySlots.push({ index: i, name });
+if (slotName === "BN" || slotName === "IR") continue;
+    const isEmpty = !pid || !players[pid];
+    if (isEmpty) {
+      emptySlots.push({ index: i, name: slotName });
     }
   }
-  return { countEmpty: emptySlots.length, emptySlots };
+
+  return {
+    countEmpty: emptySlots.length,
+    emptySlots
+  };
 }
 
 /* ---------------------------------------------------------
@@ -435,15 +452,14 @@ async function buscarPorUsuario(){
  const fantasyLeagues = (leagues || []).filter(l => l.settings && [0, 1, 2].includes(l.settings.type));
 
 
-    // iterate leagues
+   // Iterar pelas ligas
     for(const league of fantasyLeagues){
       try{
-        // fetch rosters for this league
         const rosters = await safeFetchJson(`https://api.sleeper.app/v1/league/${league.league_id}/rosters`);
         const roster = (rosters||[]).find(r => r.owner_id === userData.user_id);
         if(!roster) continue;
 
-        const leagueObj = league; // league object includes settings
+  const leagueObj = league;
         const rosterPositions = (leagueObj?.settings?.roster_positions) || null;
 
         const starters = roster.starters || [];
@@ -454,11 +470,12 @@ async function buscarPorUsuario(){
           if(p.injury_status && p.injury_status !== "Healthy") injured.push(p);
         }
 
-        // detect empty positions
-        const empties = detectEmptyPositions(starters, players, rosterPositions);
+        // Detecta posições vazias (função corrigida abaixo)
+        const empties = detectEmptyPositions(starters, players, rosterPositions, leagueObj);
 
-        // create card
-        const card = document.createElement("div"); card.className = "team-card";
+
+        // Criar card visual
+const card = document.createElement("div"); card.className = "team-card";
         const header = document.createElement("div"); header.className = "team-header";
         header.innerHTML = `
           <div class="left">
@@ -472,7 +489,7 @@ async function buscarPorUsuario(){
             <div style="margin-left:8px;">
               <button class="copy-btn" title="Copiar League ID" onclick="copyLeagueId(this,'${league.league_id}')">
                 <span class="ico">📋</span>
-              </button>
+                  </button>
             </div>
           </div>
         `;
@@ -480,7 +497,7 @@ async function buscarPorUsuario(){
 
         const body = document.createElement("div"); body.className = "team-body";
 
-        // show empty positions alert at top if any (requirement)
+        // Mostra alerta de posições vazias
         if(empties.countEmpty > 0){
           const names = empties.emptySlots.map(s => s.name || 'Posição sem jogador').join(', ');
           const emptyDiv = document.createElement("div");
@@ -489,13 +506,16 @@ async function buscarPorUsuario(){
           body.appendChild(emptyDiv);
         }
 
-        if(injured.length === 0){
-          const s = document.createElement("div"); s.className = "summary"; s.textContent = "Nenhum titular lesionado encontrado nesta liga.";
+  if(injured.length === 0){
+          const s = document.createElement("div"); 
+          s.className = "summary"; 
+          s.textContent = "Nenhum titular lesionado encontrado nesta liga.";
           body.appendChild(s);
         } else {
           body.style.display = "block";
           for(const p of injured){
-            const pl = document.createElement("div"); pl.className = "player-card";
+            const pl = document.createElement("div"); 
+            pl.className = "player-card";
             pl.innerHTML = `
               <div class="player-left">
                 <div style="width:8px;height:40px;border-radius:6px;background:${getColorForStatus(p.injury_status)}"></div>
@@ -510,7 +530,8 @@ async function buscarPorUsuario(){
           }
         }
 
-        card.appendChild(header); card.appendChild(body);
+    card.appendChild(header); 
+        card.appendChild(body);
         resultado.appendChild(card);
       } catch(errInner){
         console.warn("Erro ao processar liga", league.league_id, errInner);
@@ -577,7 +598,8 @@ async function buscarPorLiga(){
       }
 
       // detect empty positions using league roster_positions mapping
-      const empties = detectEmptyPositions(starters, players, rosterPositions);
+   const empties = detectEmptyPositions(starters, players, rosterPositions, leagueObj);
+
 
       const card = document.createElement("div"); card.className = "team-card";
       const header = document.createElement("div"); header.className = "team-header";
@@ -771,7 +793,8 @@ async function buscarFranchisePlayers(){
         const nonHealthyStarters = en.starters.filter(p => p.injury_status && p.injury_status !== "Healthy");
 
         // detect empties using rosterPositions
-        const empties = detectEmptyPositions(rawStartersIds, (awaitPlayersSnapshot()), leagueObj?.settings?.roster_positions);
+	const empties = detectEmptyPositions(starters, players, rosterPositions, leagueObj);
+
 
         // update header badges
         const frBadge = header.querySelector("[data-franchise-count]");
