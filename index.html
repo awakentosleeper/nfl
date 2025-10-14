@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Awaken - v37.19 - 11OUT25</title>
+  <title>Awaken - v37.20 - 14OUT25</title>
   <style>
     :root{
       --bg-left-dark: linear-gradient(90deg, rgba(10,10,10,1) 0%, rgba(40,40,40,0.9) 60%);
@@ -205,7 +205,7 @@
     <div class="col-left">
       <!-- 1) Por usuário (agora a primeira) -->
       <div class="panel">
-        <div class="brand"><b><red>Update 11/OUT</red></b><br> I - Fix para dispositivos moveis aplicado.<br> II - Em breve as pesquisas indicarão jogadores em bye week.</div>
+        <div class="brand"><b><red>Update 14/OUT</red></b><br> I - Busca de Franchise Players Atualizada.<br> II - Em breve as pesquisas indicarão jogadores em bye week.</div>
 	</div>
       <div class="panel">
         <h3>Quem <b>não</b> joga nos meus times?</h3>
@@ -214,7 +214,7 @@
           <button class="primary" onclick="buscarPorUsuario()">Verificar</button>
         </div>
         <div style="color:var(--muted);font-size:13px;margin-top:8px;">
-          Exibe jogadores com status questionável em todos os seus times.Também permite copiar League ID.
+          Exibe jogadores com status questionável em todos os seus times.Também permite copiar League ID 📋.
         </div>
       </div>
 
@@ -226,7 +226,7 @@
           <button class="primary" onclick="buscarPorLiga()">Buscar</button>
         </div>
         <div style="color:var(--muted);font-size:13px;margin-top:8px;">
-          Exibe os jogadores não saudáveis de todos os times na liga pesquisada. <b>Dica</b>: Copie o league id na busca anterior.
+          Exibe os jogadores não saudáveis de todos os times na liga pesquisada. <b>Dica:</b> 📋 Copie o league id na busca anterior.
         </div>
       </div>
 
@@ -1018,16 +1018,27 @@ async function buscarFranchisePlayersByTeam(){
     // Also allow matching by normalized full name or abbr present in player.team
     const matchedPlayers = [];
 
-    for(const pid in players){
-      const p = players[pid];
-      if(!p) continue;
-      const pTeamAbbr = (p.team || "").toUpperCase();
-      const pFull = abbrToFullName(pTeamAbbr) || pTeamAbbr || "";
-      // check match by full team name or abbr or normalized name
-      if(normalizeName(pFull) === normalizeName(teamName) || normalizeName(teamName).includes(normalizeName(pFull)) || normalizeName(pFull).includes(normalizeName(teamName)) || teamAbbrs.includes(pTeamAbbr)){
-        matchedPlayers.push({ id: pid, player: p });
-      }
-    }
+	  // 14-10 Atualização para buscar correspondência de time sem includes
+for (const pid in players) {
+  const p = players[pid];
+  if (!p) continue;
+
+  const playerTeamAbbr = (p.team || "").toUpperCase();
+  if (!playerTeamAbbr) continue; // ignora jogadores sem team definido
+
+  // Mapeia para nome completo
+  const playerTeamFull = abbrToFullName(playerTeamAbbr);
+
+  // Verifica correspondência exata
+  const matches =
+    playerTeamAbbr === Object.keys(abbrToFull).find(k => abbrToFull[k] === teamName) ||
+    playerTeamFull === teamName;
+
+  if (matches) {
+    matchedPlayers.push({ id: pid, player: p });
+  }
+}
+// fim atualização 14-10
 
     // also consider players currently on rosters whose team string equals teamName via abbr mapping
     // matchedPlayers now contains both rostered players and free agents for that franchise
