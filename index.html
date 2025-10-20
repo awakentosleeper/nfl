@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Awaken - v38.03 - 16OUT25</title>
+  <title>Awaken - v38.05 - 21OUT25</title>
   <style>
     :root{
       --bg-left-dark: linear-gradient(90deg, rgba(10,10,10,1) 0%, rgba(40,40,40,0.9) 60%);
@@ -114,7 +114,7 @@
   <div class="page">
     <div class="col-left">
       <div class="panel">
-        <div class="brand"><b><red>Update 16/OUT</red></b><br> I - "Quem não joga?" agora também valida jogadores de bye e sem time.<br> II - Em breve as validações de Bye serão aplicadas às outras buscas.</div>
+        <div class="brand"><b><red>Updates</red></b><br>I -21/OUT - Adicionado busca nas ligas Chopp/Guilhotina (Tks pelo aviso Douglas). <br> I - 16/OUT - "Quem não joga?" agora também valida jogadores de bye e sem time.<br> II - Em breve as validações de Bye serão aplicadas às outras buscas.</div>
       </div>
 
       <div class="panel">
@@ -369,7 +369,7 @@ async function buscarPorUsuario(){
     const players = playersObj || {};
     resultado.innerHTML = "";
 
-    const fantasyLeagues = (leagues || []).filter(l => l.settings && [0,1,2].includes(l.settings.type));
+    const fantasyLeagues = (leagues || []).filter(l => l.settings && [0,1,2,3].includes(l.settings.type));
     // prepare global debug accumulator
     let globalDebug = {
       user: username,
