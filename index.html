@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Awaken - v38.06 - 23OUT25</title>
+  <title>Awaken - v38.07 - 23OUT25</title>
   <style>
     :root{
       --bg-left-dark: linear-gradient(90deg, rgba(10,10,10,1) 0%, rgba(40,40,40,0.9) 60%);
@@ -114,7 +114,12 @@
   <div class="page">
     <div class="col-left">
       <div class="panel">
-        <div class="brand"><b><red>Updates</red></b><br>I -21/OUT - Adicionado busca nas ligas Chopp/Guilhotina (Tks pelo aviso Douglas). <br> I - 16/OUT - "Quem não joga?" agora também valida jogadores de bye e sem time.<br> II - Em breve as validações de Bye serão aplicadas às outras buscas.</div>
+        <div class="brand"><b><red>Updates</red></b><br>
+			23/OUT - Adicionado opção de ignorar jogadores <u>Questionable</u> na primeira busca. <br>
+			21/OUT - Adicionado busca nas ligas Chopp/Guilhotina (Tks pelo aviso Douglas). <br>
+			16/OUT - "Quem não joga?" agora também valida jogadores de bye e sem time.<br> 
+			<b>Em breve</b> - As validações de Bye e Ignore Questionable serão aplicadas às outras buscas. 
+		</div>
       </div>
 
       <div class="panel">
@@ -123,7 +128,9 @@
           <input id="username" type="text" placeholder="Usuário Sleeper (ex: molotovpigs)" />
           <button class="primary" onclick="buscarPorUsuario()">Verificar</button>
 	</div>
-	<!-- <div><input type="checkbox" id="ignoreQuestionable" value=false> Ignorar status Questionable</div> -->
+	<div><label style="cursor:pointer;">
+		<input type="checkbox" id="ignoreQuestionable" checked>Ignorar jogadores com status "Questionable"
+  	</label></div>
         <div style="color:var(--muted);font-size:13px;margin-top:8px;">
           Exibe <b>titulares</b> com status diferente de Healthy, em Bye Week ou Desempregados nos seus times.
         </div>
@@ -177,8 +184,8 @@
     </div>
 
     <div class="col-right">
-      <img src="https://i.ibb.co/HLkfS6BM/jogos-week8.png" width="200" height="470" alt="Jogos Semana 7 - 2025">
-      <br> <b>Times de Bye já estão na imagem</b> 
+      <img src="jogos_week8.png" width="200" height="470" alt="Jogos Semana 7 - 2025">
+      <br> <b>Times de Bye</b><br> Baltimore Ravens<br>Buffalo Bills<br> 
     </div>
   </div>
 
@@ -352,6 +359,7 @@ function detectEmptyPositions(starters = [], players = {}, rosterPositions = nul
    ------------------- */
 async function buscarPorUsuario(){
   const username = document.getElementById("username").value.trim();
+  const ignoreQuestionable = document.getElementById("ignoreQuestionable").checked;
   document.getElementById("franchiseActions").style.display = "none";
   resultado.innerHTML = `<div class="panel">Buscando usuário ${username}...</div>`;
   if(!username){ resultado.innerHTML = `<div class="panel" style="color:var(--bad)">Informe um nome de usuário.</div>`; return; }
@@ -417,10 +425,12 @@ async function buscarPorUsuario(){
             byePlayers.push({ pid, name: p.full_name || "—", position: p.position || "-", team });
           }
           // injury status
-          if(p.injury_status && p.injury_status !== "Healthy"){
-   				//if (ignoreQuestionable =="false" && p.injury_status === "Questionable") continue;
-  				injured.push(p);
-          }
+        if (p.injury_status && p.injury_status !== "Healthy") {
+ 			 // Se o usuário optou por ignorar "Questionable", pula esses jogadores
+  				if (ignoreQuestionable && p.injury_status === "Questionable") continue;
+  					injured.push(p);
+	}
+
         } // end for starters
 
         // detect empties
